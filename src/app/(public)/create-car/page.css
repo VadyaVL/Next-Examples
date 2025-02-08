@@ -1,0 +1,9 @@
+.create-car-page > form {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-car-page > form > input:not(:first-of-type),
+.create-car-page > form > button {
+    margin-top: 16px;
+}

@@ -40,3 +40,15 @@ a {
     color-scheme: dark;
   }
 }
+
+.page-layout {
+  padding: 16px;
+  margin: 0 auto;
+  max-width: 80vw;
+}
+
+@media (max-width: 600px) {
+  .page-layout {
+    max-width: unset;
+  }
+}
