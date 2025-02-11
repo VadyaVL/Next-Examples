@@ -1,5 +1,6 @@
 'use server';
 
+import { ICreateCar } from "@/models/create-car";
 import { saveCar } from "@/services/api-service";
 //import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -15,11 +16,15 @@ export const saveCarAction = async (formData: FormData) => {
         price, 
     }); */
 
-    await saveCar({
+    await saveCarAction2({
         brand: brand,
         year: +year,
         price: +price, 
     });
+};
+
+export const saveCarAction2 = async (item: ICreateCar) => {
+    await saveCar(item);
 
     //revalidatePath('/create-car');
     redirect('/cars')
