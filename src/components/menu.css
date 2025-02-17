@@ -1,9 +1,0 @@
-.menu {
-    display: flex;
-    justify-content: row;
-    list-style-type: none;
-}
-
-.menu > li:not(:first-of-type) {
-    margin-left: 16px;
-}

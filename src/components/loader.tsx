@@ -6,12 +6,10 @@ import classNames from 'classnames';
 
 interface IProps {
     isLoading: boolean;
-    title?: string;
 }
 
 export const Loader: FC<IProps> = ({
     isLoading,
-    title = 'Loading...',
 }) => {
     return (
         <div
@@ -19,7 +17,7 @@ export const Loader: FC<IProps> = ({
                 visible: isLoading,
             })}
         >
-            <span>{title}</span>
+            <span>Loading...</span>
         </div>
     );
 };

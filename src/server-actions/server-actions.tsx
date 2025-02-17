@@ -1,31 +1,42 @@
 'use server';
 
-import { ICreateCar } from "@/models/create-car";
-import { saveCar } from "@/services/api-service";
-//import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { ISignInArgs } from "@/models/sign-in-request";
+import { dummyApiServiceInstance } from "@/services/dummy-api-service";
+import { cookies } from "next/headers";
+import { redirect, RedirectType } from "next/navigation";
 
-export const saveCarAction = async (formData: FormData) => {
-    const brand = formData.get('brand') as string;
-    const year = formData.get('year') as string;
-    const price = formData.get('price') as string;
+export const signIn = async (args: ISignInArgs) => {
+    const response = await dummyApiServiceInstance.signIn(args.username, args.password);
 
-    /* console.warn({
-        brand,
-        year,
-        price, 
-    }); */
+    if (typeof response.message === 'string') {
+        throw new Error(response.message);
+    }
 
-    await saveCarAction2({
-        brand: brand,
-        year: +year,
-        price: +price, 
+    const cookiesStore = await cookies();
+
+    cookiesStore.set({
+        name: 'accessToken',
+        value: response.accessToken,
+        httpOnly: true,
+        path: '/',
     });
+    cookiesStore.set({
+        name: 'refreshToken',
+        value: response.refreshToken,
+        httpOnly: true,
+        path: '/',
+    });
+    cookiesStore.set('userData', JSON.stringify(response));
+
+    redirect('/', RedirectType.replace);
 };
 
-export const saveCarAction2 = async (item: ICreateCar) => {
-    await saveCar(item);
+export const signOut = async () => {
+    const cookiesStore = await cookies();
 
-    //revalidatePath('/create-car');
-    redirect('/cars')
+    cookiesStore.delete('accessToken');
+    cookiesStore.delete('refreshToken');
+    cookiesStore.delete('userData');
+
+    redirect('/', RedirectType.replace);
 };
